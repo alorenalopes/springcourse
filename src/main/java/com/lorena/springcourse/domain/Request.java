@@ -18,5 +18,5 @@ public class Request{
     private Date criationDate;
     private RequestStage state;
     private User user;
-    private List<RequestStage> stages = new ArrayList<RequestStage>;
+    private List<RequestStage> stages = new ArrayList<RequestStage>();
 }
