@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long>{ //Nome da classe que o repository pertence e o tipo de dados da chave primária
     
-    public List<Request> findAllOwnerId(Long id);
+    public List<Request> findAllByOwnerId(Long id);
 }
