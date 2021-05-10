@@ -1,5 +1,6 @@
 package com.lorena.springcourse.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -20,7 +21,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter @Setter
 @Entity(name = "user")
-public class User{
+public class User implements Serializable{
+
+    //Variável de controle para verificar se a versão do objeto recebido é compátivel com a versão da classe de serialização
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
