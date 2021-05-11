@@ -13,6 +13,6 @@ public interface RequestStageRepository extends JpaRepository<RequestStage, Long
     
     public List<RequestStage> findAllByRequest(Long id);
 
-    @Query("UPDATE Request SET status = ?2 WHERE id = ?1")
+    @Query("UPDATE request SET status = ?2 WHERE id = ?1")
     public Request updateStatus(Long id, RequestState state);
 }
