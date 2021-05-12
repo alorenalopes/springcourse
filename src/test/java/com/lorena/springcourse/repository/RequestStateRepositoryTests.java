@@ -52,7 +52,7 @@ public class RequestStateRepositoryTests {
 
     @Test
     public void ListByRequestIdTest(){
-        List<RequestStage> stages = requestStageRepository.findAll();
+        List<RequestStage> stages = requestStageRepository.findAllByRequestId(1L);
 
         assertEquals(1, stages.size());
     }
