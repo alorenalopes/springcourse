@@ -13,8 +13,6 @@ public class HashUtilTests {
     public void getSecureHashTest(){
         String hash = HashUtil.getSecureHash("123");
 
-        System.err.println(hash);
-
         assertEquals(64, hash.length());
     }
 }
