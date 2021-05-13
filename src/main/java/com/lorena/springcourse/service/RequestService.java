@@ -23,6 +23,11 @@ public class RequestService {
         return requestRepository.save(request);
     }
 
+    public Request update(Request request){
+
+        return requestRepository.save(request);
+    }
+
     public Request getById(Long id){
 
         Optional<Request> request = requestRepository.findById(id);
