@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.lorena.springcourse.domain.Request;
 import com.lorena.springcourse.domain.RequestStage;
+import com.lorena.springcourse.model.PageModel;
+import com.lorena.springcourse.model.PageRequestModel;
 import com.lorena.springcourse.service.RequestService;
 import com.lorena.springcourse.service.RequestStageService;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -53,9 +56,16 @@ public class RequestResource {
     }
 
     @GetMapping("/{id}/request-stages")
-    public ResponseEntity<List<RequestStage>> listAllStagesById(@PathVariable(name = "id") Long id) {
-        List<RequestStage> stages = requestStageService.listAllByRequestId(id);
-        return ResponseEntity.ok(stages);
+    public ResponseEntity<PageModel<RequestStage>> listAllStagesById(
+        @PathVariable(name = "id") Long id,
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size) {
+
+        PageRequestModel pr = new PageRequestModel(page, size);
+        
+        PageModel<RequestStage> pm = requestStageService.listAllByRequestIdOnLazyMode(id, pr);
+        
+        return ResponseEntity.ok(pm);
     }
 
 }

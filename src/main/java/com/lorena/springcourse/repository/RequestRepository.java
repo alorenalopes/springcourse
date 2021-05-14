@@ -6,6 +6,8 @@ import java.util.List;
 import com.lorena.springcourse.domain.Request;
 import com.lorena.springcourse.domain.enums.RequestState;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 public interface RequestRepository extends JpaRepository<Request, Long>{ //Nome da classe que o repository pertence e o tipo de dados da chave primária
     
     public List<Request> findAllByOwnerId(Long id);
+
+    public Page<Request> findAllByOwnerId(Long id, Pageable pageable);
 
     @Transactional(readOnly = false)
     @Modifying //Informa que essa consulta irá modificar a entidade
