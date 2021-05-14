@@ -37,7 +37,9 @@ public class RequestResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Request> update(@PathVariable(name = "id") Long id, @RequestBody Request request) {
+    public ResponseEntity<Request> update(
+        @PathVariable(name = "id") Long id, 
+        @RequestBody Request request) {
         request.setId(id);
         Request updatedRequest = requestService.update(request);
         return ResponseEntity.ok(updatedRequest);
@@ -58,8 +60,8 @@ public class RequestResource {
     @GetMapping("/{id}/request-stages")
     public ResponseEntity<PageModel<RequestStage>> listAllStagesById(
         @PathVariable(name = "id") Long id,
-        @RequestParam(value = "page") int page,
-        @RequestParam(value = "size") int size) {
+        @RequestParam(value = "page",  defaultValue = "0") int page,
+        @RequestParam(value = "size",  defaultValue = "10") int size) {
 
         PageRequestModel pr = new PageRequestModel(page, size);
         
