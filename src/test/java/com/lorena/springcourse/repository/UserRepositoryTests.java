@@ -65,5 +65,15 @@ public class UserRepositoryTests{
         assertEquals(1L, loggedUser.getId());
 
     }
+
+    @Test
+
+    public void updateRole(){
+        User user = new User(1L, "Lorena Lopes", "lorena@gmail.com", "123", Role.ADMINISTRADOR, null, null);
+        int affectedRows = userRepository.updateRole(user.getId(), Role.SIMPLE);
+
+        assertEquals(1, affectedRows);
+        
+    }
 }
 
