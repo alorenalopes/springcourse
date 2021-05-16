@@ -1,6 +1,9 @@
 package com.lorena.springcourse.resource;
 
+import javax.validation.Valid;
+
 import com.lorena.springcourse.domain.RequestStage;
+import com.lorena.springcourse.dto.RequestStageSavedto;
 import com.lorena.springcourse.service.RequestStageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,8 @@ public class RequestStageResource {
     @Autowired private RequestStageService requestStageService;
 
     @PostMapping
-    public ResponseEntity<RequestStage> save(@RequestBody RequestStage requestStage){
+    public ResponseEntity<RequestStage> save(@RequestBody @Valid RequestStageSavedto requestdto){
+        RequestStage requestStage = requestdto.transformToRequestStage();
         RequestStage createdRequestStage = requestStageService.save(requestStage);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRequestStage);
     }
