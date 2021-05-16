@@ -1,9 +1,13 @@
 package com.lorena.springcourse.resource;
 
+import javax.validation.Valid;
+
 import com.lorena.springcourse.domain.Request;
 import com.lorena.springcourse.domain.User;
 import com.lorena.springcourse.dto.UserLogindto;
+import com.lorena.springcourse.dto.UserSavedto;
 import com.lorena.springcourse.dto.UserUpdateRoledto;
+import com.lorena.springcourse.dto.UserUpdatedto;
 import com.lorena.springcourse.model.PageModel;
 import com.lorena.springcourse.model.PageRequestModel;
 import com.lorena.springcourse.service.RequestService;
@@ -29,13 +33,15 @@ public class UserResource {
     @Autowired private RequestService requestService;
 
     @PostMapping
-    public ResponseEntity<User> save(@RequestBody User user){
+    public ResponseEntity<User> save(@RequestBody @Valid UserSavedto userdto){
+        User user = userdto.transformToUser();
         User createdUser = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable(name = "id") Long id, @RequestBody User user){
+    public ResponseEntity<User> update(@PathVariable(name = "id") Long id, @RequestBody @Valid UserUpdatedto userdto){
+        User user = userdto.transformToUser();
         user.setId(id);
         User updatedUser = userService.update(user);
         return ResponseEntity.ok(updatedUser);
@@ -58,7 +64,7 @@ public class UserResource {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody UserLogindto user){
+    public ResponseEntity<User> login(@RequestBody @Valid UserLogindto user){
         User loggedUser = userService.login(user.getEmail(), user.getPassword());
         return ResponseEntity.ok(loggedUser);
     }
@@ -76,7 +82,7 @@ public class UserResource {
 
     @PatchMapping("/role/{id}")
     public ResponseEntity<?> updateRole(@PathVariable(value = "id") Long id,
-        @RequestBody UserUpdateRoledto userUpdateRole){
+        @RequestBody @Valid UserUpdateRoledto userUpdateRole){
         User user = new User();
         user.setId(id);
         user.setRole(userUpdateRole.getRole());
