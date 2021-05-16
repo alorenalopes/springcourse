@@ -1,7 +1,9 @@
 package com.lorena.springcourse.resource.exception;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.lorena.springcourse.exception.NotFoundException;
 
@@ -29,9 +31,14 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
-			String defaultMessage = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+			List<String> errors = new ArrayList<>();
+			ex.getBindingResult().getAllErrors().forEach(error -> {
+				errors.add(error.getDefaultMessage());
+			});
 
-			ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), defaultMessage, new Date());
+			String defaultMessage = "Invalid field(s)";
+
+			ApiErrorList error = new ApiErrorList(HttpStatus.BAD_REQUEST.value(), defaultMessage, new Date(), errors);
 		
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
