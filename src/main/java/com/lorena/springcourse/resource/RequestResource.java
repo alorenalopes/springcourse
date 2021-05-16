@@ -2,8 +2,12 @@ package com.lorena.springcourse.resource;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.lorena.springcourse.domain.Request;
 import com.lorena.springcourse.domain.RequestStage;
+import com.lorena.springcourse.dto.RequestSavedto;
+import com.lorena.springcourse.dto.RequestUpdatedto;
 import com.lorena.springcourse.model.PageModel;
 import com.lorena.springcourse.model.PageRequestModel;
 import com.lorena.springcourse.service.RequestService;
@@ -31,7 +35,8 @@ public class RequestResource {
     private RequestStageService requestStageService;
 
     @PostMapping
-    public ResponseEntity<Request> save(@RequestBody Request request) {
+    public ResponseEntity<Request> save(@RequestBody @Valid RequestSavedto requestdto) {
+        Request request = requestdto.transformtoRequest();
         Request createdRequest = requestService.save(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);
     }
@@ -39,7 +44,8 @@ public class RequestResource {
     @PutMapping("/{id}")
     public ResponseEntity<Request> update(
         @PathVariable(name = "id") Long id, 
-        @RequestBody Request request) {
+        @RequestBody @Valid RequestUpdatedto requestdto) {
+        Request request = requestdto.transformtoRequest();
         request.setId(id);
         Request updatedRequest = requestService.update(request);
         return ResponseEntity.ok(updatedRequest);
