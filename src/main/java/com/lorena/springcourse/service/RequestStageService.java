@@ -40,7 +40,8 @@ public class RequestStageService {
 
         Optional<RequestStage> requestStage = requestStageRepository.findById(id);
         
-        return requestStage.get();
+        return requestStage.isPresent() ? requestStage.get():null;
+
 
     }
 

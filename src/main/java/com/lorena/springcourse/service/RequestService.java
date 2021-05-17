@@ -37,7 +37,8 @@ public class RequestService {
 
         Optional<Request> request = requestRepository.findById(id);
 
-        return request.get();
+        return request.isPresent() ? request.get():null;
+
     }
     
     public List<Request> listAll(){

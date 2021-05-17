@@ -20,6 +20,7 @@ public class UserService {
     
     @Autowired private UserRepository userRepository;
 
+    
     public User save(User user){ 
 
         String hash = HashUtil.getSecureHash(user.getPassword());
@@ -38,7 +39,8 @@ public class UserService {
     public User getById(Long id ){
         Optional<User> result = userRepository.findById(id);
 
-        return result.get();
+        return result.isPresent() ? result.get():null;
+
     }
 
     public List<User> listAll(){
@@ -57,7 +59,7 @@ public class UserService {
         
         Optional<User> result = userRepository.login(email, password);
         
-        return result.get();
+        return result.isPresent() ? result.get():null;
     }
 
     public int updateRole(User user){
