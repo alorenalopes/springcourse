@@ -32,9 +32,9 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler{
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
 			List<String> errors = new ArrayList<>();
-			ex.getBindingResult().getAllErrors().forEach(error -> {
-				errors.add(error.getDefaultMessage());
-			});
+			ex.getBindingResult().getAllErrors().forEach(error -> 
+				errors.add(error.getDefaultMessage())
+			);
 
 			String defaultMessage = "Invalid field(s)";
 
