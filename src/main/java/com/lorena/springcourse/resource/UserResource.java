@@ -1,5 +1,9 @@
 package com.lorena.springcourse.resource;
 
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import com.lorena.springcourse.domain.Request;
@@ -10,6 +14,7 @@ import com.lorena.springcourse.dto.UserUpdateRoledto;
 import com.lorena.springcourse.dto.UserUpdatedto;
 import com.lorena.springcourse.model.PageModel;
 import com.lorena.springcourse.model.PageRequestModel;
+import com.lorena.springcourse.security.JwtManager;
 import com.lorena.springcourse.service.RequestService;
 import com.lorena.springcourse.service.UserService;
 
@@ -36,6 +41,7 @@ public class UserResource {
     @Autowired private UserService userService;
     @Autowired private RequestService requestService;
     @Autowired private AuthenticationManager authManager;
+    @Autowired private JwtManager jwtManager;
 
     @PostMapping
     public ResponseEntity<User> save(@RequestBody @Valid UserSavedto userdto){
@@ -69,12 +75,22 @@ public class UserResource {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody @Valid UserLogindto user){
+    public ResponseEntity<String> login(@RequestBody @Valid UserLogindto user){
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         Authentication auth = authManager.authenticate(token);
 
         SecurityContextHolder.getContext().setAuthentication(auth);
-        return ResponseEntity.ok(null);
+
+        org.springframework.security.core.userdetails.User userSpring = 
+        (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+
+        String email = userSpring.getUsername();
+        List<String> roles = userSpring.getAuthorities().stream()
+                                       .map(authority -> authority.getAuthority())
+                                       .collect(Collectors.toList());
+
+        String jwt = jwtManager.createToken(email, roles);
+        return ResponseEntity.ok(jwt);
     }
 
     @GetMapping("/{id}/requests")
