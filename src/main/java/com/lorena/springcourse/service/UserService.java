@@ -84,7 +84,7 @@ public class UserService implements UserDetailsService {
         List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())); //.name porque o Role é uma string e "ROLE_" para ser compreendido como uma permissão
         //asList -> Lista pré definida de elementos
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getName(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     
     }
 }
