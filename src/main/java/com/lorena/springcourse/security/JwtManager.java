@@ -17,6 +17,7 @@ public class JwtManager {
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, SecurityConstants.JWT_EXP_DAYS);
+        
         return Jwts.builder().setSubject(email)
                                    .setExpiration(calendar.getTime())
                                    .claim(SecurityConstants.JWT_ROLE_KEY, roles)
