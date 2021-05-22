@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import com.lorena.springcourse.domain.Request;
 import com.lorena.springcourse.domain.User;
+import com.lorena.springcourse.dto.UserLoginResponsedto;
 import com.lorena.springcourse.dto.UserLogindto;
 import com.lorena.springcourse.dto.UserSavedto;
 import com.lorena.springcourse.dto.UserUpdateRoledto;
@@ -74,7 +75,7 @@ public class UserResource {
     }
 
     @PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody @Valid UserLogindto user) {
+	public ResponseEntity<UserLoginResponsedto> login(@RequestBody @Valid UserLogindto user) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
 		Authentication auth = authManager.authenticate(token);
 		
