@@ -21,6 +21,7 @@ import com.lorena.springcourse.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,6 +44,7 @@ public class UserResource {
     @Autowired private AuthenticationManager authManager;
     @Autowired private JwtManager jwtManager;
 
+    @Secured({"ROLE_ADMINISTRADOR"})
     @PostMapping
     public ResponseEntity<User> save(@RequestBody @Valid UserSavedto userdto){
         User user = userdto.transformToUser();
@@ -105,6 +107,7 @@ public class UserResource {
         return ResponseEntity.ok(pm);    
     }
 
+    @Secured({"ROLE_ADMINISTRADOR"})
     @PatchMapping("/role/{id}")
     public ResponseEntity<?> updateRole(@PathVariable(value = "id") Long id,
         @RequestBody @Valid UserUpdateRoledto userUpdateRole){
