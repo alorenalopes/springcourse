@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.print.attribute.standard.Media;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -59,12 +57,13 @@ public class AuthorizationFilter extends OncePerRequestFilter{ //Garante que cad
     try{
         Claims claims = new JwtManager().parseToken(jwt);
         String email = claims.getSubject();
+        @SuppressWarnings("unchecked")
         List<String> roles = (List<String>) claims.get(SecurityConstants.JWT_ROLE_KEY);
 
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        roles.forEach(role -> {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role));
-        });
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        roles.forEach(role -> 
+            grantedAuthorities.add(new SimpleGrantedAuthority(role))
+        );
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, grantedAuthorities);
     
@@ -80,7 +79,12 @@ public class AuthorizationFilter extends OncePerRequestFilter{ //Garante que cad
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        
+
         return;
+
+    }
+
+    filterChain.doFilter(request, response);
+
     }
 }
