@@ -8,6 +8,8 @@ import com.lorena.springcourse.dto.UserLoginResponsedto;
 
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -29,6 +31,13 @@ public class JwtManager {
 
         return new UserLoginResponsedto(jwt, expireIn, SecurityConstants.JWT_PROVIDER);
 
+    }
+
+    public  Claims parseToken(String jwt) throws JwtException{
+        return Jwts.parser()
+                            .setSigningKey(SecurityConstants.API_KEY.getBytes())
+                            .parseClaimsJwt(jwt)
+                            .getBody();
     }
     
 }
