@@ -36,7 +36,7 @@ public class JwtManager {
     public  Claims parseToken(String jwt) throws JwtException{
         return Jwts.parser()
                             .setSigningKey(SecurityConstants.API_KEY.getBytes())
-                            .parseClaimsJwt(jwt)
+                            .parseClaimsJws(jwt) //Método utilizado quando é certo que o parâmetro passado teve um processo de criptografia
                             .getBody();
     }
     
