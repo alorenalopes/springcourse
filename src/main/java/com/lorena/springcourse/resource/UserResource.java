@@ -14,6 +14,7 @@ import com.lorena.springcourse.dto.UserUpdateRoledto;
 import com.lorena.springcourse.dto.UserUpdatedto;
 import com.lorena.springcourse.model.PageModel;
 import com.lorena.springcourse.model.PageRequestModel;
+import com.lorena.springcourse.security.AccessManager;
 import com.lorena.springcourse.security.JwtManager;
 import com.lorena.springcourse.service.RequestService;
 import com.lorena.springcourse.service.UserService;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,6 +45,7 @@ public class UserResource {
     @Autowired private RequestService requestService;
     @Autowired private AuthenticationManager authManager;
     @Autowired private JwtManager jwtManager;
+    @Autowired private AccessManager accessManager;
 
     @Secured({"ROLE_ADMINISTRADOR"})
     @PostMapping
@@ -51,7 +54,8 @@ public class UserResource {
         User createdUser = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
-    
+
+    @PreAuthorize("@accessManager.isOwner(#id)")
     @PutMapping("/{id}")
     public ResponseEntity<User> update(@PathVariable(name = "id") Long id, @RequestBody @Valid UserUpdatedto userdto){
         User user = userdto.transformToUser();
