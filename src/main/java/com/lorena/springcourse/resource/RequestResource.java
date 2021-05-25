@@ -10,7 +10,6 @@ import com.lorena.springcourse.dto.RequestSavedto;
 import com.lorena.springcourse.dto.RequestUpdatedto;
 import com.lorena.springcourse.model.PageModel;
 import com.lorena.springcourse.model.PageRequestModel;
-import com.lorena.springcourse.security.AccessManager;
 import com.lorena.springcourse.service.RequestService;
 import com.lorena.springcourse.service.RequestStageService;
 
@@ -33,7 +32,6 @@ public class RequestResource {
 
     @Autowired private RequestService requestService;
     @Autowired private RequestStageService requestStageService;
-    @Autowired private AccessManager accessManager;
 
     @PostMapping
     public ResponseEntity<Request> save(@RequestBody @Valid RequestSavedto requestdto) {

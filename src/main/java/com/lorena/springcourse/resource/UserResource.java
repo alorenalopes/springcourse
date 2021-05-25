@@ -14,7 +14,6 @@ import com.lorena.springcourse.dto.UserUpdateRoledto;
 import com.lorena.springcourse.dto.UserUpdatedto;
 import com.lorena.springcourse.model.PageModel;
 import com.lorena.springcourse.model.PageRequestModel;
-import com.lorena.springcourse.security.AccessManager;
 import com.lorena.springcourse.security.JwtManager;
 import com.lorena.springcourse.service.RequestService;
 import com.lorena.springcourse.service.UserService;
@@ -45,7 +44,6 @@ public class UserResource {
     @Autowired private RequestService requestService;
     @Autowired private AuthenticationManager authManager;
     @Autowired private JwtManager jwtManager;
-    @Autowired private AccessManager accessManager;
 
     @Secured({"ROLE_ADMINISTRADOR"})
     @PostMapping
