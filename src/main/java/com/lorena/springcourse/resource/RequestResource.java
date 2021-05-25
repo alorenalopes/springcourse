@@ -10,12 +10,14 @@ import com.lorena.springcourse.dto.RequestSavedto;
 import com.lorena.springcourse.dto.RequestUpdatedto;
 import com.lorena.springcourse.model.PageModel;
 import com.lorena.springcourse.model.PageRequestModel;
+import com.lorena.springcourse.security.AccessManager;
 import com.lorena.springcourse.service.RequestService;
 import com.lorena.springcourse.service.RequestStageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "requests")
 public class RequestResource {
 
-    @Autowired
-    private RequestService requestService;
-    @Autowired
-    private RequestStageService requestStageService;
+    @Autowired private RequestService requestService;
+    @Autowired private RequestStageService requestStageService;
+    @Autowired private AccessManager accessManager;
 
     @PostMapping
     public ResponseEntity<Request> save(@RequestBody @Valid RequestSavedto requestdto) {
@@ -41,6 +42,7 @@ public class RequestResource {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);
     }
 
+    @PreAuthorize("@accessManager.isRequestOwner(#id)")
     @PutMapping("/{id}")
     public ResponseEntity<Request> update(
         @PathVariable(name = "id") Long id, 
